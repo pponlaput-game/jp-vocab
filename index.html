@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>คลังศัพท์ญี่ปุ่น</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Sarabun:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="title jp">語彙帳</div>
+  <button id="syncBtn" class="sync" type="button">
+    <span id="syncLabel">ซิงค์</span>
+  </button>
+</header>
+
+<main>
+  <!-- ===== ทบทวน ===== -->
+  <section id="view-review" class="view active">
+    <div class="filters">
+      <select id="lessonSelect" aria-label="เลือกบท"></select>
+      <label class="check"><input type="checkbox" id="shuffleChk" checked> สุ่มลำดับ</label>
+    </div>
+    <div id="progress" class="progress"></div>
+
+    <div id="card" class="card">
+      <div id="cardLesson" class="lesson"></div>
+      <div id="cardFront" class="front jp"></div>
+      <div id="cardBack" class="back hidden">
+        <div id="cardReading" class="reading jp"></div>
+        <div id="cardMeaning" class="meaning"></div>
+        <div id="cardExample" class="example">
+          <div id="cardExJp" class="ex-jp jp"></div>
+          <div id="cardExTh" class="ex-th"></div>
+        </div>
+        <div class="audio-row">
+          <button type="button" class="link" id="speakWord">ฟังคำ</button>
+          <button type="button" class="link" id="speakEx">ฟังประโยค</button>
+        </div>
+      </div>
+      <button id="revealBtn" type="button" class="reveal">ดูคำตอบ</button>
+    </div>
+
+    <div id="answerRow" class="answer-row">
+      <button id="failBtn" type="button" class="ans fail">จำไม่ได้</button>
+      <button id="passBtn" type="button" class="ans pass">จำได้</button>
+    </div>
+
+    <div id="emptyState" class="empty hidden"></div>
+  </section>
+
+  <!-- ===== รายการคำ ===== -->
+  <section id="view-list" class="view">
+    <input id="searchBox" class="search" type="search" placeholder="ค้นหา คันจิ / คำอ่าน / ความหมาย">
+    <div class="filters">
+      <select id="lessonSelect2" aria-label="เลือกบท"></select>
+      <select id="statusSelect" aria-label="สถานะ">
+        <option value="all">ทุกสถานะ</option>
+        <option value="todo">ยังไม่ผ่าน</option>
+        <option value="fail">ไม่ผ่าน</option>
+        <option value="new">ยังไม่ทบทวน</option>
+        <option value="pass">ผ่านแล้ว</option>
+      </select>
+    </div>
+    <div id="listCount" class="muted small"></div>
+    <div id="list" class="list"></div>
+    <button id="moreBtn" type="button" class="plain hidden">แสดงเพิ่ม</button>
+  </section>
+
+  <!-- ===== ตั้งค่า ===== -->
+  <section id="view-settings" class="view">
+    <h2>เชื่อมกับ Google Sheet</h2>
+    <label class="field">URL เว็บแอป (Apps Script)
+      <input id="apiUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+    </label>
+    <label class="field">TOKEN
+      <input id="apiToken" type="text" autocomplete="off" spellcheck="false">
+    </label>
+    <button id="saveSettings" type="button" class="primary">บันทึกและซิงค์</button>
+
+    <div class="info" id="syncInfo"></div>
+
+    <h2>เสียง</h2>
+    <p class="muted small">ถ้ามีลิงก์ในคอลัมน์ audio_url แอปจะเล่นเสียงนั้นก่อน ถ้าไม่มีจะใช้เสียงอ่านอัตโนมัติ (TTS) ภาษาญี่ปุ่นของเครื่อง</p>
+    <button id="testTts" type="button" class="plain">ทดสอบเสียง: <span class="jp">こんにちは</span></button>
+
+    <h2>ข้อมูลในเครื่อง</h2>
+    <button id="clearLocal" type="button" class="plain danger">ล้างข้อมูลในเครื่อง (ดึงใหม่จาก Sheet)</button>
+    <p class="muted small">สถานะที่ยังไม่ได้ส่งขึ้น Sheet จะหายไปด้วย</p>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button type="button" data-view="review" class="tab active">ทบทวน</button>
+  <button type="button" data-view="list" class="tab">คำศัพท์</button>
+  <button type="button" data-view="settings" class="tab">ตั้งค่า</button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
