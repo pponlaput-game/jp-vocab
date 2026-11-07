@@ -65,6 +65,13 @@ async function init() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
+  // ลิงก์ตั้งค่าอัตโนมัติ: ...#u=<URL เว็บแอป>&k=<TOKEN>
+  const hp = new URLSearchParams(location.hash.slice(1));
+  if (hp.get('u') && hp.get('k')) {
+    LS.url = hp.get('u');
+    LS.token = hp.get('k');
+    history.replaceState(null, '', location.pathname);   // ลบ TOKEN ออกจากแถบที่อยู่
+  }
   bindUI();
   items = await dbAll('items');
   pendingCount = (await dbAll('pending')).length;
