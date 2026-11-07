@@ -1,6 +1,6 @@
 /* Service worker — ทำให้แอปเปิดได้แม้ไม่มีเน็ต
  * แก้ไฟล์แอปแล้วให้เปลี่ยนเลข VERSION เพื่อให้มือถือโหลดของใหม่ */
-const VERSION = 'v2';
+const VERSION = 'v3';
 const SHELL = 'shell-' + VERSION;
 const FONTS = 'fonts-v1';
 const FILES = [

@@ -63,7 +63,13 @@ init();
 
 async function init() {
   if ('serviceWorker' in navigator) {
+    const hadController = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.register('sw.js').catch(() => {});
+    // มีเวอร์ชันใหม่ของแอป → โหลดหน้าใหม่ครั้งเดียวให้ได้ของใหม่ทันที
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (hadController && !reloaded) { reloaded = true; location.reload(); }
+    });
   }
   // ลิงก์ตั้งค่าอัตโนมัติ: ...#u=<URL เว็บแอป>&k=<TOKEN>
   const hp = new URLSearchParams(location.hash.slice(1));
